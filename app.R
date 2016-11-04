@@ -2,6 +2,7 @@ library(shiny)
 library(httr)
 library(dplyr)
 library(lubridate)
+library(forcats)
 
 development <- TRUE
 
@@ -92,18 +93,23 @@ if (development) {
   process_results <- do.call(rbind, (lapply(results, process_result_df)))
   process_results$extract <- as.character(process_results$extract)
   process_results$date <- ymd(process_results$hdate)
+  other_parties <-  setdiff(unique(process_results$party), 
+                                   c("Conservative", "Labour", "Liberal Democrat", "Plaid Cymru")) 
   process_results <- process_results %>%
-    filter(!is.na(name))
+    filter(!is.na(name)) %>%
+    mutate(party = fct_collapse(party, Other = other_parties))
 }
+
+
 
 
 server <- function(input, output) {
 
   output$speaker_extract <- renderUI(lapply(1:nrow(process_results),
                                             function(i) {
-                                              tags$div(class=paste("my-row", gsub(" ", "", as.character(process_results$party[i]))),
-                                                tags$div(class="col-sm-4 jpanel", process_results$name[i]),
-                                              tags$div(class="col-sm-8 jpanel", HTML(process_results$extract[i])) 
+                                              tags$tr(class=gsub(" ", "", as.character(process_results$party[i])),
+                                                tags$th(class="thname", tags$h4(process_results$name[i], align="center")),
+                                              tags$th(class="thextract", HTML(process_results$extract[i])) 
                                                          )}))
   
 }
@@ -111,12 +117,14 @@ server <- function(input, output) {
 ui <- fixedPage(
   includeCSS("www/cosmo.css"),
   includeCSS("www/jolly.css"),
-  titlePanel("Jolly Well"),
-  fixedRow(
+  tags$h2("Jolly Well", align="center"),
+
     column(12,
+           tags$table(
        htmlOutput("speaker_extract")
         )
     )
+
   )
 
 shinyApp(ui = ui, server = server)

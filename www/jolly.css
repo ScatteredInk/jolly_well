@@ -10,17 +10,59 @@ and Executive colours being taken from a mix of brand guidelines and their websi
 Some of the fonts are licensed - so only freely available fonts are used below.
 */ 
 
-
-.my-row {
-    display: table;
+.Conservative .hi {
+  background-color: white;
+  color: #0087dc;
+  padding-right:0.5em;
+  padding-left: 0.5em;
 }
 
-.my-row .jpanel {
-    float: none;
-    display: table-cell;
-    vertical-align: top;
-    border: 2px solid;
-    border-color: white;
+.Labour .hi {
+  background-color: white;
+  color: #d50000;
+  padding-right:0.5em;
+  padding-left: 0.5em;
+}
+
+.LiberalDemocrat .hi {
+  background-color: white;
+  color: #FDBB30;
+  padding-right:0.5em;
+  padding-left: 0.5em;
+}
+
+.PlaidCymru .hi {
+  background-color: white;
+  color: #3F8428;
+  padding-right:0.5em;
+  padding-left: 0.5em;
+}
+
+.IndependentLiberalDemocrat .hi {
+  background-color: white;
+  color: #00929F;
+  padding-right:0.5em;
+  padding-left: 0.5em;
+}
+
+.Other .hi {
+  background-color: white;
+  color: #D3D3D3;
+  padding-right:0.5em;
+  padding-left: 0.5em;
+}
+
+.thname {
+  width: 30%;
+  padding: 0.5em;
+  border: 5px solid white;
+}
+
+.thextract {
+  font-weight: normal;
+  width: 70%;
+  padding: 0.5em;
+  border: 5px solid white;
 }
 
 .Conservative { background-color: #0087dc; color: #fff;}
@@ -28,3 +70,4 @@ Some of the fonts are licensed - so only freely available fonts are used below.
 .LiberalDemocrat {background:#FDBB30; color: #fff;}
 .PlaidCymru {background:#3F8428; color: #fff;} 
 .IndependentLiberalDemocrat {background:#00929F; color: #fff;}
+.Other {background-color:#D3D3D3 ; color: #fff;}
