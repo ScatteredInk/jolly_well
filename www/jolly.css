@@ -1,0 +1,30 @@
+/*
+Derived from UKPOL CSS - CC BY-SA 4.0
+version:   1.0 
+date:      01/08/2014 
+author:    Richard Allen 
+email:     rourkie@gmail.com 
+website:   http://www.richardallen.co.uk
+This is accurate as of 1st August 2014, with department colours being taken from gov.uk, Party colours being taken from brand guidelines
+and Executive colours being taken from a mix of brand guidelines and their websites.
+Some of the fonts are licensed - so only freely available fonts are used below.
+*/ 
+
+
+.my-row {
+    display: table;
+}
+
+.my-row .jpanel {
+    float: none;
+    display: table-cell;
+    vertical-align: top;
+    border: 2px solid;
+    border-color: white;
+}
+
+.Conservative { background-color: #0087dc; color: #fff;}
+.Labour {background:#d50000; color: #fff;}
+.LiberalDemocrat {background:#FDBB30; color: #fff;}
+.PlaidCymru {background:#3F8428; color: #fff;} 
+.IndependentLiberalDemocrat {background:#00929F; color: #fff;}

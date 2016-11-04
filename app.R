@@ -2,7 +2,6 @@ library(shiny)
 library(httr)
 library(dplyr)
 library(lubridate)
-library(ggplot2)
 
 development <- TRUE
 
@@ -23,16 +22,11 @@ hansard_search <- function(search_term, key = twfy_api_key, page = "1") {
                                                    "&output=js", 
                                                    collapse = "", sep = ""))
   
-  #resp <- GET(url, ua,
-  #            authenticate(key, "", type = "basic"))
-  
   resp <- GET(url, ua)
   
   #if (http_type(resp) != "application/json") {
   #  stop("API did not return json", call. = FALSE)
   #}
-  
-  
   
   parsed <- jsonlite::fromJSON(content(resp, "text"), simplifyDataFrame =TRUE)
   
@@ -53,7 +47,7 @@ hansard_search <- function(search_term, key = twfy_api_key, page = "1") {
       path = search_term,
       response = resp
     ),
-    class = "comp_house_api"
+    class = "they_work_for_you_api"
   )
   
   
@@ -103,43 +97,20 @@ if (development) {
 }
 
 
-
-#process_results %>%
-#  mutate(month = as.Date(cut(date,breaks = "quarter"))) %>%
-#  group_by(month) %>%
-#  summarise(n=n()) 
-
-  
-
 server <- function(input, output) {
-  # output$input_ui <- renderUI({
-  #   num <- as.integer(input$num)
-  #   
-  #   lapply(1:num, function(i) {
-  #     numericInput(paste0("n_input_", i), label = paste0("n_input", i), value = 0)
-  #   })
-  # })
-  # 
-  # output$table <- renderTable({
-  #   num <- as.integer(input$num)
-  #   
-  #   head(process_results, num)
-  # })
-  
 
   output$speaker_extract <- renderUI(lapply(1:nrow(process_results),
                                             function(i) {
-                                              fixedRow(
-                                                tags$div(class=as.character(process_results$party[i])),
-                                                column(4, process_results$name[i]),
-                                                column(8, renderUI(HTML(process_results$extract[i]))) 
-                                                         )}) 
-                                                )
-
+                                              tags$div(class=paste("my-row", gsub(" ", "", as.character(process_results$party[i]))),
+                                                tags$div(class="col-sm-4 jpanel", process_results$name[i]),
+                                              tags$div(class="col-sm-8 jpanel", HTML(process_results$extract[i])) 
+                                                         )}))
   
 }
 
 ui <- fixedPage(
+  includeCSS("www/cosmo.css"),
+  includeCSS("www/jolly.css"),
   titlePanel("Jolly Well"),
   fixedRow(
     column(12,
@@ -147,6 +118,5 @@ ui <- fixedPage(
         )
     )
   )
-
 
 shinyApp(ui = ui, server = server)
