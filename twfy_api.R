@@ -12,7 +12,7 @@ key_from_environ <- function(keyname) {
   key
 }
 
-hansard_search <- function(search_term, key = twfy_api_key, page = "1") {
+hansard_search <- function(search_term, key, ua, page = "1") {
   base_hansard_url <- "https://www.theyworkforyou.com"
   url <- modify_url(base_hansard_url, path = paste("api/getHansard?key=", key,
                                                    "&search=", search_term,
@@ -20,7 +20,7 @@ hansard_search <- function(search_term, key = twfy_api_key, page = "1") {
                                                    "&output=js", 
                                                    collapse = "", sep = ""))
   
-  resp <- GET(url, ua)
+  resp <- GET(url,  ua)
   
   #if (http_type(resp) != "application/json") {
   #  stop("API did not return json", call. = FALSE)
@@ -52,8 +52,8 @@ hansard_search <- function(search_term, key = twfy_api_key, page = "1") {
   parsed
 }
 
-get_all_hansard_search <- function(search_term, key = twfy_api_key) {
-  first_result <- hansard_search(search_term, key)
+get_all_hansard_search <- function(search_term, key, ua) {
+  first_result <- hansard_search(search_term, key = key, ua = ua)
   num_pages <- ceiling(first_result[[1]]$total_results/20)
   if (num_pages == 1) return (first_result)
   
@@ -61,7 +61,7 @@ get_all_hansard_search <- function(search_term, key = twfy_api_key) {
   hansard_results[[1]] <- first_result[["rows"]]
   
   for (page in seq(2, num_pages)) {
-    res <- hansard_search(search_term, key, page = page)
+    res <- hansard_search(search_term, key = key, ua = ua, page = page)
     hansard_results[[page]] <- res[["rows"]]
   }
   

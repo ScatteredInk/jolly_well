@@ -3,6 +3,7 @@ library(shinyjs)
 
 source("twfy_api.R")
 
+Sys.setenv("BUILD" = "PRODUCTION")
 #Sys.setenv("BUILD" = "DEVELOP")
 develop_build <- ifelse(Sys.getenv("BUILD")=="DEVELOP", TRUE, FALSE)
 
@@ -13,7 +14,7 @@ twfy_api_key <- key_from_environ("TWFY_API_KEY")
 if (develop_build) {
   process_results <- readRDS("pr_cache.RDS")
 } else {
-  results <- get_all_hansard_search(api_query)
+  results <- get_all_hansard_search(api_query, twfy_api_key, ua)
   process_results <- do.call(rbind, (lapply(results, process_result_df)))
   process_results$extract <- as.character(process_results$extract)
   process_results$date <- ymd(process_results$hdate)
