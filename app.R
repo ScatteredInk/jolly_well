@@ -4,7 +4,8 @@ library(dplyr)
 library(lubridate)
 library(forcats)
 
-development <- TRUE
+#Sys.setenv("BUILD" = "DEVELOP")
+develop_build <- ifelse(Sys.getenv("BUILD")=="DEVELOP", TRUE, FALSE)
 
 key_from_environ <- function(keyname) {
   key <- Sys.getenv(keyname)
@@ -86,7 +87,7 @@ ua <- user_agent("http://github.com/scatteredink")
 api_query = "%22jolly+well%22"
 twfy_api_key <- key_from_environ("TWFY_API_KEY")
 
-if (development) {
+if (develop_build) {
   process_results <- readRDS("pr_cache.RDS")
 } else {
   results <- get_all_hansard_search(api_query)
