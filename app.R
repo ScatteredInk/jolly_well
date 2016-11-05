@@ -25,7 +25,9 @@ if (develop_build) {
     mutate(party = fct_collapse(party, Other = other_parties))
 }
 
+
 server <- function(input, output) {
+  
 
   output$speaker_extract <- renderUI(lapply(1:nrow(process_results),
                                             function(i) {
@@ -34,13 +36,15 @@ server <- function(input, output) {
                                               tags$th(class="thextract", HTML(process_results$extract[i])) 
                                                          )}))
   observeEvent(input$aboutBtn, {
-    toggle("extracts_table")
+    toggle("data")
+    toggle("about")
     toggle("aboutBtn")
     toggle("dataBtn")
   })
   
   observeEvent(input$dataBtn, {
-    toggle("extracts_table")
+    toggle("data")
+    toggle("about")
     toggle("aboutBtn")
     toggle("dataBtn")
   })
@@ -57,12 +61,16 @@ ui <- fixedPage(
     column(12,
         fixedRow(actionButton("aboutBtn", "About"),
                  hidden(actionButton("dataBtn", "Data"))),
-        fixedRow(
-          tags$div(id="extracts_table",
+        hidden(tags$div(class="row", id="about",
+          column(3),
+          column(6, fixedRow(tags$div("Jolly Well is a measuring device for the malaise of post-imperial nostalgia.")),
+                 fixedRow(tags$a(href="https://github.com/ScatteredInk/jolly_well", target = "_blank", 
+                                 tags$img(src = "images/github.png", class = "centerimg", alt="Github logo")))),
+          column(3))),
+        tags$div(class="row", id="data",
               htmlOutput("speaker_extract", inline = FALSE)
           )
-        )
       )
-    )
-
+)
+      
 shinyApp(ui = ui, server = server)

@@ -9,6 +9,12 @@ This is accurate as of 1st August 2014, with department colours being taken from
 and Executive colours being taken from a mix of brand guidelines and their websites.
 Some of the fonts are licensed - so only freely available fonts are used below.
 */ 
+.centerimg {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1em;
+}
 
 .Conservative .hi {
   background-color: white;
