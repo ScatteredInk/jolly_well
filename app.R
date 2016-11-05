@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyjs)
 library(httr)
 library(dplyr)
 library(lubridate)
@@ -101,9 +102,6 @@ if (develop_build) {
     mutate(party = fct_collapse(party, Other = other_parties))
 }
 
-
-
-
 server <- function(input, output) {
 
   output$speaker_extract <- renderUI(lapply(1:nrow(process_results),
@@ -112,20 +110,36 @@ server <- function(input, output) {
                                                 tags$th(class="thname", tags$h4(process_results$name[i], align="center")),
                                               tags$th(class="thextract", HTML(process_results$extract[i])) 
                                                          )}))
+  observeEvent(input$aboutBtn, {
+    toggle("extracts_table")
+    toggle("aboutBtn")
+    toggle("dataBtn")
+  })
+  
+  observeEvent(input$dataBtn, {
+    toggle("extracts_table")
+    toggle("aboutBtn")
+    toggle("dataBtn")
+  })
+
   
 }
 
 ui <- fixedPage(
+  useShinyjs(),
   includeCSS("www/cosmo.css"),
   includeCSS("www/jolly.css"),
   tags$h2("Jolly Well", align="center"),
 
     column(12,
-           tags$table(
-       htmlOutput("speaker_extract")
+        fixedRow(actionButton("aboutBtn", "About"),
+                 hidden(actionButton("dataBtn", "Data"))),
+        fixedRow(
+          tags$div(id="extracts_table",
+              htmlOutput("speaker_extract", inline = FALSE)
+          )
         )
+      )
     )
-
-  )
 
 shinyApp(ui = ui, server = server)
