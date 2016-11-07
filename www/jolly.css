@@ -8,7 +8,14 @@ website:   http://www.richardallen.co.uk
 This is accurate as of 1st August 2014, with department colours being taken from gov.uk, Party colours being taken from brand guidelines
 and Executive colours being taken from a mix of brand guidelines and their websites.
 Some of the fonts are licensed - so only freely available fonts are used below.
-*/ 
+*/
+
+.nav > li a:link{
+    color:#333333;
+}
+  
+
+
 .centerimg {
   display: block;
   margin-left: auto;

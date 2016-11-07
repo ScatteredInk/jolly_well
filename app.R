@@ -31,7 +31,8 @@ server <- function(input, output) {
 
   output$speaker_extract <- renderUI(lapply(1:nrow(process_results),
                                             function(i) {
-                                              tags$tr(class=gsub(" ", "", as.character(process_results$party[i])),
+                                              tags$tr(class=gsub(" ", "", as.character(process_results$party[i])), 
+                                                      id = gsub(" ", "", as.character(process_results$party[i])),
                                                 tags$th(class="thname", tags$h4(process_results$name[i], align="center")),
                                               tags$th(class="thextract", HTML(process_results$extract[i])) 
                                                          )}))
@@ -39,15 +40,33 @@ server <- function(input, output) {
     toggle("data")
     toggle("about")
     toggle("aboutBtn")
-    toggle("dataBtn")
+    toggle("dataBtn2")
   })
   
-  observeEvent(input$dataBtn, {
+  observeEvent(input$dataBtn2, {
     toggle("data")
     toggle("about")
     toggle("aboutBtn")
-    toggle("dataBtn")
+    toggle("dataBtn2")
   })
+  
+  observeEvent(input$statsBtn, {
+    toggle("data")
+    toggle("about")
+    toggle("aboutBtn")
+    toggle("dataBtn1")
+    toggle("dataBtn2")
+    toggle("statsBtn")
+  })
+  
+  observeEvent(input$dataBtn1, {
+    toggle("data")
+    toggle("about")
+    toggle("aboutBtn")
+    toggle("dataBtn1")
+    toggle("dataBtn2")
+    toggle("statsBtn")
+  }) 
 
   
 }
@@ -57,20 +76,21 @@ ui <- fixedPage(
   includeCSS("www/cosmo.css"),
   includeCSS("www/jolly.css"),
   tags$h2("Jolly Well", align="center"),
-
-    column(12,
-        fixedRow(actionButton("aboutBtn", "About"),
-                 hidden(actionButton("dataBtn", "Data"))),
-        hidden(tags$div(class="row", id="about",
-          column(3),
-          column(6, fixedRow(tags$div("Jolly Well is a measuring device for the malaise of post-imperial nostalgia.")),
-                 fixedRow(tags$a(href="https://github.com/ScatteredInk/jolly_well", target = "_blank", 
-                                 tags$img(src = "images/github.png", class = "centerimg", alt="Github logo")))),
-          column(3))),
+  
         tags$div(class="row", id="data",
-              htmlOutput("speaker_extract", inline = FALSE)
+                 tabsetPanel(
+                             tabPanel("Data", htmlOutput("speaker_extract", inline = FALSE)),
+                             tabPanel("Statistics", tags$h3("Some statistics here")),
+                             tabPanel("About", 
+                                      tags$div(class="row", id="about",
+                                               column(3),
+                                               column(6, fixedRow(tags$div("Jolly Well is a measuring device for the malaise of post-imperial nostalgia.")),
+                                                      fixedRow(tags$a(href="https://github.com/ScatteredInk/jolly_well", target = "_blank", 
+                                                                      tags$img(src = "images/github.png", class = "centerimg", alt="Github logo")))),
+                                               column(3)))
+              )
           )
       )
-)
+
       
 shinyApp(ui = ui, server = server)
